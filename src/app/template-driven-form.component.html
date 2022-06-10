@@ -1,0 +1,83 @@
+<h3>Template-driven User Form</h3>
+<form #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
+ <table>
+   <tr>
+      <td>Username: *</td>
+      <td>
+         <input name="username" required ngModel #uname="ngModel">
+         <div *ngIf="uname.dirty && uname.errors" class = "error">
+            <div *ngIf="uname.errors.required"> 
+               Username required.
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td>Password: *</td>
+      <td>
+         <input type="password" name="password" required [matchForUsername]="uname.value" ngModel #pwd="ngModel">
+         <div *ngIf="pwd.dirty && pwd.errors" class = "error">
+            <div *ngIf="pwd.errors.required"> 
+               Password required.
+            </div>
+            <div *ngIf="pwd.errors.matchForUsername"> 
+               Password cannot be same as Username.
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td>Confirm Password: *</td>
+      <td>
+         <input type="password" name="confirmPassword" required [cnfPassword]="pwd.value" ngModel #cnfPwd="ngModel">
+         <div *ngIf="cnfPwd.dirty && cnfPwd.errors" class = "error">
+            <div *ngIf="cnfPwd.errors.required"> 
+               Confirm Password required.
+            </div>
+            <div *ngIf="cnfPwd.errors.cnfPassword"> 
+               Confirm Password not matched.
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td>Notification Mode: *</td>
+      <td> 
+         <input type="radio" value="email" name="notificationMode" required ngModel #mode="ngModel"> Email
+         <input type="radio" value="mobile" name="notificationMode" required ngModel #mode="ngModel"> Mobile
+         <input type="radio" value="both" name="notificationMode" required ngModel #mode="ngModel"> Both				
+      </td>
+   </tr>
+   <tr>
+      <td>Email: </td>
+      <td>
+         <input name="email" [required]="mode.value === 'email' || mode.value === 'both'"
+         [email]= "mode.value === 'email' || mode.value === 'both'" ngModel #uemail="ngModel">
+         <div *ngIf="uemail.dirty && uemail.errors" class = "error">
+            <div *ngIf="uemail.errors.required"> 
+               Email required.
+            </div>
+            <div *ngIf="uemail.errors.email"> 
+               Email not valid.
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td>Mobile Number: </td>
+      <td>
+         <input name="mobileNumber" [required]="mode.value === 'mobile' || mode.value === 'both'" ngModel #mnumber="ngModel">
+         <div *ngIf="mnumber.dirty && mnumber.errors" class = "error">
+            <div *ngIf="mnumber.errors.required"> 
+               Mobile number required.
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td colspan="2">
+         <button [disabled]="userForm.invalid">Submit</button>
+      </td>
+   </tr>
+ </table>
+</form> 
